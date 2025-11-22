@@ -13,6 +13,7 @@
             --accent-color: #00E5FF; 
             --btn-border: rgba(255, 255, 255, 0.5); 
             --card-bg: rgba(255, 255, 255, 0.05);
+            --gold-color: #FFD700; /* Для пакетів */
         }
 
         body {
@@ -33,7 +34,6 @@
             display: flex; align-items: center; justify-content: center;
             transition: opacity 0.5s ease-out;
         }
-        /* Збільшив логотип */
         .logo-img { width: 280px; height: auto; animation: pulseLogo 3s infinite; }
         @keyframes pulseLogo { 0% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.05); opacity: 1; } 100% { transform: scale(1); opacity: 0.8; } }
 
@@ -52,9 +52,12 @@
         }
         .btn:active { background-color: rgba(255, 255, 255, 0.1); transform: scale(0.98); }
         .btn-primary { border-color: var(--accent-color); color: var(--accent-color); box-shadow: 0 0 15px rgba(0, 229, 255, 0.15); }
+        
+        /* КНОПКА ПАКЕТІВ (Золота) */
+        .btn-gold { border-color: var(--gold-color); color: var(--gold-color); box-shadow: 0 0 15px rgba(255, 215, 0, 0.15); }
 
-        /* КАРТКИ ТА БЛОКИ */
-        .description, .faq-item, .calc-container, .brief-step {
+        /* БЛОКИ */
+        .description, .faq-item, .calc-container, .brief-step, .bundle-card {
             background: var(--card-bg); padding: 20px; border-radius: 20px;
             margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.1);
         }
@@ -62,12 +65,23 @@
         .legal-badge { display: inline-block; background: rgba(0, 229, 255, 0.1); color: var(--accent-color); padding: 6px 12px; border-radius: 50px; font-size: 11px; font-weight: bold; margin-bottom: 15px; width: 100%; text-align: center; box-sizing: border-box; border: 1px solid rgba(0, 229, 255, 0.3); }
         .meta-info { text-align: center; color: rgba(255, 255, 255, 0.5); margin-bottom: 10px; font-size: 13px; text-transform: uppercase; }
 
-        /* СТИЛІ БРИФУ */
+        /* ТЕХНОЛОГІЇ */
+        .tech-container { text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); }
+        .tech-title { font-size: 12px; color: #aaa; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; }
+        .tech-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+        .tech-chip { font-size: 11px; background: rgba(255,255,255,0.05); padding: 5px 10px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); color: #ddd; }
+
+        /* ПАКЕТИ */
+        .bundle-card { border: 1px solid var(--gold-color); box-shadow: 0 0 10px rgba(255, 215, 0, 0.05); position: relative; overflow: hidden; }
+        .bundle-badge { position: absolute; top: 10px; right: 10px; background: var(--gold-color); color: #000; font-size: 10px; font-weight: bold; padding: 3px 8px; border-radius: 10px; }
+        .bundle-list { text-align: left; margin: 15px 0; font-size: 14px; line-height: 1.6; color: #eee; }
+
+        /* ІНШЕ */
         .brief-input { width: 100%; padding: 15px; margin: 10px 0 20px 0; border-radius: 10px; border: 1px solid var(--accent-color); background: rgba(0,0,0,0.2); color: white; font-size: 16px; box-sizing: border-box; outline: none; }
         .brief-option { padding: 15px; border: 1px solid rgba(255,255,255,0.3); border-radius: 12px; margin-bottom: 10px; text-align: center; cursor: pointer; transition: 0.2s; }
         .brief-option:active { background: var(--accent-color); color: #000; border-color: var(--accent-color); }
-
-        /* КАЛЬКУЛЯТОР */
+        
+        /* Калькулятор */
         select { width: 100%; padding: 12px; border-radius: 10px; background: rgba(255,255,255,0.1); color: white; border: 1px solid var(--accent-color); margin-bottom: 20px; font-size: 16px; outline: none; }
         option { background: #1A2B43; color: white; }
         .range-container { margin: 20px 0; text-align: center; }
@@ -106,9 +120,29 @@
     <script>
         // ⚙️ НАЛАШТУВАННЯ
         const MY_TELEGRAM_USERNAME = "codego_manager"; 
+        const BOT_USERNAME = "Codegotgbot"; // Нік твого бота для посилань
         const COMPANY_NAME = "Code&Go";
         const COMPANY_SLOGAN = "Digital Solutions";
         const SPLASH_TIME = 3000;
+
+        // 📦 ПАКЕТИ ПОСЛУГ (BUNDLES)
+        const BUNDLES = [
+            { 
+                title: "Пакет «Швидкий Старт»", 
+                price: "9 999 грн", 
+                desc: "✅ Лендінг (унікальний дизайн)\n✅ Логотип\n✅ Домен у подарунок\n✅ Базове SEO"
+            },
+            { 
+                title: "Пакет «Бізнес PRO»", 
+                price: "15 999 грн", 
+                desc: "✅ Корпоративний сайт (до 10 стор)\n✅ Адмін-панель\n✅ Підтримка (1 місяць)\n✅ Налаштування реклами"
+            },
+            { 
+                title: "Пакет «E-Commerce MAX»", 
+                price: "39 999 грн", 
+                desc: "✅ Інтернет-магазин під ключ\n✅ Телеграм-бот для замовлень\n✅ SEO Просування (1 міс)\n✅ Інтеграція CRM"
+            }
+        ];
 
         // 💰 ЦІНИ
         const SERVICES = {
@@ -164,9 +198,10 @@
             }, SPLASH_TIME); 
         };
 
-        function createBtn(text, onClick, isPrimary = false) {
+        function createBtn(text, onClick, isPrimary = false, isGold = false) {
             const btn = document.createElement('button');
-            btn.className = isPrimary ? 'btn btn-primary' : 'btn';
+            if (isGold) btn.className = 'btn btn-gold';
+            else btn.className = isPrimary ? 'btn btn-primary' : 'btn';
             btn.innerText = text;
             btn.onclick = () => { tg.HapticFeedback.impactOccurred('light'); onClick(); };
             return btn;
@@ -179,13 +214,31 @@
             const c = document.createElement('div'); c.className = 'fade-in';
             c.innerHTML = `<h1>${COMPANY_NAME}</h1><div class="subtitle">${COMPANY_SLOGAN} <br> Вітаю, ${tg.initDataUnsafe?.user?.first_name || 'Клієнте'}! 👋</div>`;
             
+            c.appendChild(createBtn("🔥 Готові Пакети (Hot)", renderBundles, false, true)); // НОВЕ
             c.appendChild(createBtn("🌐 Сайти", () => renderCategory('sites')));
             c.appendChild(createBtn("🤖 Боти / Mini App", () => renderCategory('bots')));
             c.appendChild(createBtn("📈 SEO Послуги", () => renderCategory('seo')));
-            c.appendChild(createBtn("📝 Заповнити Бриф", renderBrief, true)); // НОВА КНОПКА
+            c.appendChild(createBtn("📝 Заповнити Бриф", renderBrief, true)); 
             c.appendChild(createBtn("🧮 Розумний Калькулятор", renderCalculator)); 
             c.appendChild(createBtn("❓ Питання (FAQ)", renderFAQ));
             c.appendChild(createBtn("💬 Консультація", () => tg.openTelegramLink(`https://t.me/${MY_TELEGRAM_USERNAME}`)));
+            
+            // Кнопка "Поділитися"
+            c.appendChild(createBtn("🎁 Порадити другу", () => {
+                tg.openTelegramLink(`https://t.me/share/url?url=https://t.me/${BOT_USERNAME}&text=Привіт! Рекомендую цих хлопців для розробки сайтів та ботів. Ось посилання:`);
+            }));
+
+            // Блок Технологій (Footer)
+            const techDiv = document.createElement('div');
+            techDiv.className = 'tech-container';
+            techDiv.innerHTML = `<div class="tech-title">Ми використовуємо:</div>
+                <div class="tech-chips">
+                    <span class="tech-chip">HTML5</span><span class="tech-chip">CSS3</span><span class="tech-chip">JavaScript</span>
+                    <span class="tech-chip">Python</span><span class="tech-chip">React</span><span class="tech-chip">Node.js</span>
+                    <span class="tech-chip">Telegram API</span><span class="tech-chip">OpenAI</span><span class="tech-chip">Figma</span>
+                </div>`;
+            c.appendChild(techDiv);
+
             app.appendChild(c);
         }
 
@@ -210,62 +263,59 @@
             app.appendChild(c);
         }
 
-        // --- ГЕНЕРАТОР БРИФУ (НОВЕ) ---
+        // --- ПАКЕТИ ПОСЛУГ (BUNDLES) ---
+        function renderBundles() {
+            tg.BackButton.show(); tg.BackButton.onClick(() => renderHome());
+            app.innerHTML = '';
+            const c = document.createElement('div'); c.className = 'fade-in';
+            c.innerHTML = `<h2>Гарячі Пакети 🔥</h2><div class="subtitle">Вигідні пропозиції під ключ</div>`;
+            
+            BUNDLES.forEach(b => {
+                const card = document.createElement('div'); card.className = 'bundle-card';
+                card.innerHTML = `<div class="bundle-badge">ХІТ ПРОДАЖІВ</div><h3>${b.title}</h3><div class="bundle-list">${b.desc.replace(/\n/g, '<br>')}</div><div class="price-tag" style="color:var(--gold-color); font-size:26px;">${b.price}</div>`;
+                
+                const btn = createBtn("Замовити пакет", () => {
+                    tg.openTelegramLink(`https://t.me/${MY_TELEGRAM_USERNAME}?text=${encodeURIComponent('Привіт! Мене цікавить пакет: ' + b.title)}`);
+                }, false, true);
+                
+                card.appendChild(btn);
+                c.appendChild(card);
+            });
+            app.appendChild(c);
+        }
+
+        // --- ГЕНЕРАТОР БРИФУ ---
         function renderBrief() {
             let briefData = { niche: "", type: "", budget: "", deadline: "" };
             let step = 1;
-
             function showStep() {
                 tg.BackButton.show();
                 if(step === 1) tg.BackButton.onClick(() => renderHome());
                 else tg.BackButton.onClick(() => { step--; showStep(); });
-
                 app.innerHTML = '';
                 const c = document.createElement('div'); c.className = 'fade-in';
-
                 if (step === 1) {
                     c.innerHTML = `<h2>Крок 1/4</h2><div class="subtitle">Яка у вас ніша бізнесу?</div><div class="brief-step"><input type="text" id="nicheInput" class="brief-input" placeholder="Наприклад: Кав'ярня, СТО..."></div>`;
-                    c.appendChild(createBtn("Далі ➡", () => {
-                        const val = document.getElementById('nicheInput').value;
-                        if(!val) return tg.showAlert("Будь ласка, напишіть нішу");
-                        briefData.niche = val; step++; showStep();
-                    }, true));
+                    c.appendChild(createBtn("Далі ➡", () => { const val = document.getElementById('nicheInput').value; if(!val) return tg.showAlert("Будь ласка, напишіть нішу"); briefData.niche = val; step++; showStep(); }, true));
                 }
                 else if (step === 2) {
                     c.innerHTML = `<h2>Крок 2/4</h2><div class="subtitle">Що потрібно розробити?</div>`;
-                    ["Лендінг", "Інтернет-магазин", "Корпоративний сайт", "Чат-бот", "SEO", "Інше"].forEach(opt => {
-                        const b = document.createElement('div'); b.className = 'brief-option'; b.innerText = opt;
-                        b.onclick = () => { briefData.type = opt; step++; showStep(); };
-                        c.appendChild(b);
-                    });
+                    ["Лендінг", "Інтернет-магазин", "Корпоративний сайт", "Чат-бот", "SEO", "Інше"].forEach(opt => { const b = document.createElement('div'); b.className = 'brief-option'; b.innerText = opt; b.onclick = () => { briefData.type = opt; step++; showStep(); }; c.appendChild(b); });
                 }
                 else if (step === 3) {
                     c.innerHTML = `<h2>Крок 3/4</h2><div class="subtitle">Орієнтовний бюджет?</div>`;
-                    ["до 5 000 грн", "5 000 - 10 000 грн", "10 000 - 20 000 грн", "20 000+ грн"].forEach(opt => {
-                        const b = document.createElement('div'); b.className = 'brief-option'; b.innerText = opt;
-                        b.onclick = () => { briefData.budget = opt; step++; showStep(); };
-                        c.appendChild(b);
-                    });
+                    ["до 5 000 грн", "5 000 - 10 000 грн", "10 000 - 20 000 грн", "20 000+ грн"].forEach(opt => { const b = document.createElement('div'); b.className = 'brief-option'; b.innerText = opt; b.onclick = () => { briefData.budget = opt; step++; showStep(); }; c.appendChild(b); });
                 }
                 else if (step === 4) {
                     c.innerHTML = `<h2>Фінал</h2><div class="subtitle">Коли потрібно запустити?</div>`;
-                    ["Терміново (до тижня)", "2-3 тижні", "Місяць", "Не поспішаю"].forEach(opt => {
-                        const b = document.createElement('div'); b.className = 'brief-option'; b.innerText = opt;
-                        b.onclick = () => {
-                            briefData.deadline = opt;
-                            sendBrief();
-                        };
-                        c.appendChild(b);
-                    });
+                    ["Терміново (до тижня)", "2-3 тижні", "Місяць", "Не поспішаю"].forEach(opt => { const b = document.createElement('div'); b.className = 'brief-option'; b.innerText = opt; b.onclick = () => { briefData.deadline = opt; sendBrief(); }; c.appendChild(b); });
                 }
                 app.appendChild(c);
             }
-
             function sendBrief() {
                 const msg = `📝 НОВИЙ БРИФ!\n\n🏢 Ніша: ${briefData.niche}\n🛠 Тип: ${briefData.type}\n💰 Бюджет: ${briefData.budget}\n⏱ Терміни: ${briefData.deadline}\n\n👋 Чекаю на зворотній зв'язок!`;
                 tg.openTelegramLink(`https://t.me/${MY_TELEGRAM_USERNAME}?text=${encodeURIComponent(msg)}`);
             }
-
             showStep();
         }
 
@@ -276,11 +326,9 @@
             const c = document.createElement('div'); c.className = 'fade-in';
             
             const selectHTML = `<div class="calc-container"><div class="calc-label" style="margin-bottom:10px; color:#ccc;">Тип послуги:</div><select id="typeSelect">${Object.keys(CALC_TYPES).map(k => `<option value="${k}">${CALC_TYPES[k].name}</option>`).join('')}</select><div id="sliderBlock"><label id="sliderLabel" class="range-label">Кількість: 0</label><input type="range" id="rangeInput" min="0" max="10" value="0"></div></div>`;
-            
             let extrasHTML = `<div class="calc-container" style="margin-top:10px;">`;
             CALC_EXTRAS.forEach(ex => { extrasHTML += `<div class="calc-row"><div class="calc-label">${ex.name}</div><div style="display:flex; align-items:center;"><div class="calc-price">+${ex.price}</div><label class="switch"><input type="checkbox" class="extra-check" data-price="${ex.price}" data-name="${ex.name}"><span class="slider"></span></label></div></div>`; });
             extrasHTML += `</div>`;
-
             const footerHTML = `<div class="total-bar"><div style="font-size:13px; color:#aaa;">Орієнтовна вартість:</div><div class="price-tag" id="totalPrice" style="margin:5px 0;">0 грн</div><button id="orderCalcBtn" class="btn btn-primary">Замовити розрахунок</button></div>`;
 
             c.innerHTML = `<h2>Калькулятор</h2>` + selectHTML + extrasHTML + footerHTML;
@@ -308,11 +356,9 @@
                 totalDisplay.innerText = total + " грн";
                 return { total, typeData, sliderVal };
             }
-
             select.addEventListener('change', () => { rangeInput.value = 0; calculate(); });
             rangeInput.addEventListener('input', calculate);
             checks.forEach(ch => ch.addEventListener('change', () => { tg.HapticFeedback.impactOccurred('light'); calculate(); }));
-
             document.getElementById('orderCalcBtn').onclick = () => {
                 const data = calculate();
                 let msg = `🔢 Новий прорахунок!\n\n📌 Тип: ${data.typeData.name} (База: ${data.typeData.base} грн)\n`;
