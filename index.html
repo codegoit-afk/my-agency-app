@@ -1,1 +1,119 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Послуги Розробки</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root { --bg-color: var(--tg-theme-bg-color, #ffffff); --text-color: var(--tg-theme-text-color, #000000); --btn-color: var(--tg-theme-button-color, #3390ec); --btn-text-color: var(--tg-theme-button-text-color, #ffffff); --secondary-bg: var(--tg-theme-secondary-bg-color, #f1f1f1); --hint-color: var(--tg-theme-hint-color, #999999); }
+        body { background-color: var(--bg-color); color: var(--text-color); font-family: sans-serif; margin: 0; padding: 20px; box-sizing: border-box; }
+        .fade-in { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        h1 { text-align: center; margin-bottom: 5px; font-size: 28px; } /* Збільшив заголовок */
+        .subtitle { text-align: center; color: var(--hint-color); margin-bottom: 25px; font-size: 14px; }
+        h2 { text-align: center; margin-bottom: 20px; }
+        .btn { display: block; width: 100%; padding: 14px; margin-bottom: 10px; border: none; border-radius: 10px; background-color: var(--btn-color); color: var(--btn-text-color); font-size: 16px; font-weight: 600; cursor: pointer; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .btn-outline { background-color: transparent; border: 2px solid var(--btn-color); color: var(--btn-color); }
+        .price-tag { font-size: 24px; font-weight: bold; color: var(--btn-color); text-align: center; margin: 15px 0; }
+        .meta-info { font-size: 14px; color: var(--hint-color); text-align: center; margin-bottom: 15px; font-style: italic; }
+        .description { line-height: 1.6; margin-bottom: 20px; white-space: pre-wrap; font-size: 15px; }
+        .legal-badge { display: inline-block; background: #e0f7fa; color: #006064; padding: 5px 10px; border-radius: 5px; font-size: 12px; font-weight: bold; margin-bottom: 10px; width: 100%; text-align: center; box-sizing: border-box; }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+    <script>
+        // ==========================================
+        // 👇 НАЛАШТУВАННЯ (ЗМІНЮЙ ТУТ) 👇
+        // ==========================================
+        
+        const MY_TELEGRAM_USERNAME = "IIIAX_00"; // Твій нік без @
+        const COMPANY_NAME = "Code&Go"; // Назва твоєї агенції
+        const COMPANY_SLOGAN = "Створюємо сайти, які приносять гроші"; // Підпис під назвою
+
+        // ==========================================
+
+        const SERVICES = {
+            landing: { title: "Лендінг", price: "від 1250 грн", time: "6-24 год", desc: "Сайт для швидких продажів. **Мета:** змусити купити тут і зараз." },
+            corp: { title: "Корпоративний сайт", price: "від 2499 грн", time: "24-72 год", desc: "Офіс компанії в інтернеті. Викликає довіру та показує статус." },
+            shop: { title: "Інтернет-магазин", price: "від 4199 грн", time: "3-7 днів", desc: "Машина для продажів 24/7. Каталог, кошик, автоматизація." },
+            simple_bot: { title: "Простий чат-бот", price: "від 2499 грн", time: "48-72 год", desc: "Бот-секретар. Відповідає на питання, економить ваш час." },
+            integration_bot: { title: "Бот з інтеграціями", price: "від 4199 грн", time: "3-7 днів", desc: "Рівень PRO. Зв'язок з CRM, таблицями та записом клієнтів." },
+            mini_app: { title: "Mini App (як цей)", price: "від 6299 грн", time: "5-9 днів", desc: "Додаток прямо в Telegram. Вау-ефект для клієнтів." },
+            audit: { title: "Аудит сайту", price: "від 799 грн", time: "6-24 год", desc: "Пошук помилок, які заважають вам заробляти." },
+            seo_adapt: { title: "SEO адаптація", price: "від 2499 грн", time: "3-7 днів", desc: "Разова настройка сайту, щоб Google його полюбив." },
+            seo_promo: { title: "SEO просування", price: "від 4199 грн", time: "від 7 днів", desc: "Виведення в ТОП Google. Безкоштовні клієнти щодня." }
+        };
+
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        const app = document.getElementById('app');
+        let historyStack = [];
+
+        function createBtn(text, onClick, isOutline = false) {
+            const btn = document.createElement('button');
+            btn.className = isOutline ? 'btn btn-outline' : 'btn';
+            btn.innerText = text;
+            btn.onclick = () => { tg.HapticFeedback.impactOccurred('light'); onClick(); };
+            return btn;
+        }
+
+        function renderHome() {
+            app.innerHTML = '';
+            tg.BackButton.hide();
+            const c = document.createElement('div'); c.className = 'fade-in';
+            
+            // БЛОК З НАЗВОЮ КОМПАНІЇ
+            const h1 = document.createElement('h1');
+            h1.innerText = COMPANY_NAME;
+            
+            const sub = document.createElement('div');
+            sub.className = 'subtitle';
+            sub.innerText = `${COMPANY_SLOGAN}\n\nВітаю, ${tg.initDataUnsafe?.user?.first_name || 'Клієнте'}! 👋`;
+
+            c.appendChild(h1);
+            c.appendChild(sub);
+
+            c.appendChild(createBtn("🌐 Замовити сайт", () => renderCategory('sites')));
+            c.appendChild(createBtn("🤖 Телеграм бот / Mini App", () => renderCategory('bots')));
+            c.appendChild(createBtn("📈 SEO послуги", () => renderCategory('seo')));
+            c.appendChild(createBtn("💬 Консультація", () => tg.openTelegramLink(`https://t.me/${MY_TELEGRAM_USERNAME}`), true));
+            app.appendChild(c);
+        }
+
+        function renderCategory(type) {
+            historyStack.push(renderHome);
+            tg.BackButton.show();
+            tg.BackButton.onClick(() => renderHome());
+            app.innerHTML = '';
+            const c = document.createElement('div'); c.className = 'fade-in';
+            const h2 = document.createElement('h2'); 
+            
+            if (type === 'sites') { h2.innerText = "Сайти"; c.appendChild(h2); ['landing', 'corp', 'shop'].forEach(k => c.appendChild(createBtn(SERVICES[k].title, () => renderProduct(k)))); }
+            if (type === 'bots') { h2.innerText = "Боти"; c.appendChild(h2); ['simple_bot', 'integration_bot', 'mini_app'].forEach(k => c.appendChild(createBtn(SERVICES[k].title, () => renderProduct(k)))); }
+            if (type === 'seo') { h2.innerText = "SEO"; c.appendChild(h2); ['audit', 'seo_adapt', 'seo_promo'].forEach(k => c.appendChild(createBtn(SERVICES[k].title, () => renderProduct(k)))); }
+            app.appendChild(c);
+        }
+
+        function renderProduct(key) {
+            tg.BackButton.show();
+            tg.BackButton.onClick(() => renderHome()); 
+            const p = SERVICES[key];
+            app.innerHTML = '';
+            const c = document.createElement('div'); c.className = 'fade-in';
+            
+            c.innerHTML = `<h2>${p.title}</h2><div class="legal-badge">🛡 Офіційно: ФОП, Договір</div><div class="description">${p.desc.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')}</div><div class="meta-info">⏱ ${p.time}</div><div class="price-tag">${p.price}</div>`;
+            
+            c.appendChild(createBtn(`🔥 Хочу замовити`, () => {
+                tg.openTelegramLink(`https://t.me/${MY_TELEGRAM_USERNAME}?text=${encodeURIComponent('Привіт! Хочу замовити: ' + p.title)}`);
+            }));
+            c.appendChild(createBtn("🔙 Назад", renderHome, true));
+            app.appendChild(c);
+        }
+
+        renderHome();
+    </script>
+</body>
+</html>
 
