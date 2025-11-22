@@ -2,37 +2,173 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Послуги Розробки</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Code&Go</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        :root { --bg-color: var(--tg-theme-bg-color, #ffffff); --text-color: var(--tg-theme-text-color, #000000); --btn-color: var(--tg-theme-button-color, #3390ec); --btn-text-color: var(--tg-theme-button-text-color, #ffffff); --secondary-bg: var(--tg-theme-secondary-bg-color, #f1f1f1); --hint-color: var(--tg-theme-hint-color, #999999); }
-        body { background-color: var(--bg-color); color: var(--text-color); font-family: sans-serif; margin: 0; padding: 20px; box-sizing: border-box; }
-        .fade-in { animation: fadeIn 0.3s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        h1 { text-align: center; margin-bottom: 5px; font-size: 28px; } /* Збільшив заголовок */
-        .subtitle { text-align: center; color: var(--hint-color); margin-bottom: 25px; font-size: 14px; }
-        h2 { text-align: center; margin-bottom: 20px; }
-        .btn { display: block; width: 100%; padding: 14px; margin-bottom: 10px; border: none; border-radius: 10px; background-color: var(--btn-color); color: var(--btn-text-color); font-size: 16px; font-weight: 600; cursor: pointer; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .btn-outline { background-color: transparent; border: 2px solid var(--btn-color); color: var(--btn-color); }
-        .price-tag { font-size: 24px; font-weight: bold; color: var(--btn-color); text-align: center; margin: 15px 0; }
-        .meta-info { font-size: 14px; color: var(--hint-color); text-align: center; margin-bottom: 15px; font-style: italic; }
-        .description { line-height: 1.6; margin-bottom: 20px; white-space: pre-wrap; font-size: 15px; }
-        .legal-badge { display: inline-block; background: #e0f7fa; color: #006064; padding: 5px 10px; border-radius: 5px; font-size: 12px; font-weight: bold; margin-bottom: 10px; width: 100%; text-align: center; box-sizing: border-box; }
+        /* 🎨 НОВИЙ ДИЗАЙН CODE&GO */
+        :root {
+            --bg-color: #1A2B43; /* Темно-синій фон */
+            --text-color: #ffffff;
+            --accent-color: #00E5FF; /* Неоновий ціан */
+            --btn-border: rgba(255, 255, 255, 0.5); 
+            --card-bg: rgba(255, 255, 255, 0.05);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            min-height: 100vh;
+            overflow-x: hidden; /* Прибирає горизонтальний скрол */
+        }
+
+        /* 🔥 ЗАСТАВКА (SPLASH SCREEN) */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff; /* Білий фон для лого */
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .logo-text {
+            font-size: 42px;
+            font-weight: 900;
+            color: #1A2B43;
+            letter-spacing: -1px;
+            animation: pulseLogo 2s infinite;
+        }
+
+        @keyframes pulseLogo {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.8; }
+        }
+
+        /* ОСНОВНИЙ ІНТЕРФЕЙС */
+        h1 { 
+            font-size: 32px; 
+            font-weight: 800; 
+            text-align: center; 
+            margin: 10px 0 5px 0;
+            color: #fff;
+        }
+        
+        h2 { text-align: center; color: var(--accent-color); margin-bottom: 25px; }
+        
+        .subtitle { 
+            text-align: center; 
+            color: rgba(255, 255, 255, 0.6); 
+            margin-bottom: 40px; 
+            font-size: 14px; 
+            letter-spacing: 0.5px;
+        }
+
+        /* КНОПКИ (Овальні та прозорі) */
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 18px; /* Більші кнопки */
+            margin-bottom: 15px;
+            background-color: transparent;
+            border: 1px solid var(--btn-border);
+            border-radius: 50px; /* Повністю овальні */
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+            backdrop-filter: blur(10px);
+            -webkit-tap-highlight-color: transparent; /* Прибирає виділення на iPhone */
+        }
+
+        .btn:active {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: scale(0.98);
+        }
+
+        /* Кнопка "Купити" - яскрава */
+        .btn-primary {
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.15);
+        }
+
+        /* ОПИС */
+        .description {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 20px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            white-space: pre-wrap;
+            font-size: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .price-tag {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--accent-color);
+            text-align: center;
+            margin: 25px 0;
+            text-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+        }
+
+        .meta-info {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 10px;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .legal-badge {
+            display: inline-block;
+            background: rgba(0, 229, 255, 0.1);
+            color: var(--accent-color);
+            padding: 8px 15px;
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            width: 100%;
+            text-align: center;
+            box-sizing: border-box;
+            border: 1px solid rgba(0, 229, 255, 0.3);
+        }
+
+        /* Анімація появи блоків */
+        .fade-in { animation: fadeIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
-    <div id="app"></div>
-    <script>
-        // ==========================================
-        // 👇 НАЛАШТУВАННЯ (ЗМІНЮЙ ТУТ) 👇
-        // ==========================================
-        
-        const MY_TELEGRAM_USERNAME = "IIIAX_00"; // Твій нік без @
-        const COMPANY_NAME = "Code&Go"; // Назва твоєї агенції
-        const COMPANY_SLOGAN = "Створюємо сайти, які приносять гроші"; // Підпис під назвою
 
-        // ==========================================
+    <div id="splash-screen">
+        <div class="logo-text">Code&Go</div>
+    </div>
+
+    <div id="app" style="display: none;"></div>
+
+    <script>
+        // 👇 ВПИШИ СЮДИ СВІЙ НІК 👇
+        const MY_TELEGRAM_USERNAME = "ТУТ_ТВІЙ_НІК"; 
+
+        const COMPANY_NAME = "Code&Go";
+        const COMPANY_SLOGAN = "Digital Solutions";
 
         const SERVICES = {
             landing: { title: "Лендінг", price: "від 1250 грн", time: "6-24 год", desc: "Сайт для швидких продажів. **Мета:** змусити купити тут і зараз." },
@@ -48,71 +184,88 @@
 
         const tg = window.Telegram.WebApp;
         tg.expand();
-        const app = document.getElementById('app');
-        let historyStack = [];
+        tg.setHeaderColor('#1A2B43'); 
+        tg.setBackgroundColor('#1A2B43');
 
-        function createBtn(text, onClick, isOutline = false) {
+        const app = document.getElementById('app');
+        const splash = document.getElementById('splash-screen');
+
+        // Логіка заставки
+        window.onload = () => {
+            setTimeout(() => {
+                splash.style.opacity = '0';
+                setTimeout(() => {
+                    splash.style.display = 'none';
+                    app.style.display = 'block';
+                    renderHome();
+                }, 500);
+            }, 2000); // Час показу лого (2 сек)
+        };
+
+        // Функція створення кнопок
+        function createBtn(text, onClick, isPrimary = false) {
             const btn = document.createElement('button');
-            btn.className = isOutline ? 'btn btn-outline' : 'btn';
+            btn.className = isPrimary ? 'btn btn-primary' : 'btn';
             btn.innerText = text;
             btn.onclick = () => { tg.HapticFeedback.impactOccurred('light'); onClick(); };
             return btn;
         }
 
+        // --- ЕКРАНИ ---
+
         function renderHome() {
             app.innerHTML = '';
-            tg.BackButton.hide();
+            tg.BackButton.hide(); // Ховаємо кнопку назад в головному меню
+            
             const c = document.createElement('div'); c.className = 'fade-in';
             
-            // БЛОК З НАЗВОЮ КОМПАНІЇ
-            const h1 = document.createElement('h1');
-            h1.innerText = COMPANY_NAME;
+            c.innerHTML = `<h1>${COMPANY_NAME}</h1><div class="subtitle">${COMPANY_SLOGAN} <br> Вітаю, ${tg.initDataUnsafe?.user?.first_name || 'Клієнте'}! 👋</div>`;
+
+            c.appendChild(createBtn("🌐 Сайти", () => renderCategory('sites')));
+            c.appendChild(createBtn("🤖 Боти / Mini App", () => renderCategory('bots')));
+            c.appendChild(createBtn("📈 SEO Послуги", () => renderCategory('seo')));
+            c.appendChild(createBtn("💬 Консультація", () => tg.openTelegramLink(`https://t.me/${MY_TELEGRAM_USERNAME}`)));
             
-            const sub = document.createElement('div');
-            sub.className = 'subtitle';
-            sub.innerText = `${COMPANY_SLOGAN}\n\nВітаю, ${tg.initDataUnsafe?.user?.first_name || 'Клієнте'}! 👋`;
-
-            c.appendChild(h1);
-            c.appendChild(sub);
-
-            c.appendChild(createBtn("🌐 Замовити сайт", () => renderCategory('sites')));
-            c.appendChild(createBtn("🤖 Телеграм бот / Mini App", () => renderCategory('bots')));
-            c.appendChild(createBtn("📈 SEO послуги", () => renderCategory('seo')));
-            c.appendChild(createBtn("💬 Консультація", () => tg.openTelegramLink(`https://t.me/${MY_TELEGRAM_USERNAME}`), true));
             app.appendChild(c);
         }
 
         function renderCategory(type) {
-            historyStack.push(renderHome);
             tg.BackButton.show();
-            tg.BackButton.onClick(() => renderHome());
+            tg.BackButton.onClick(() => renderHome()); // З категорії повертаємось додому
+
             app.innerHTML = '';
             const c = document.createElement('div'); c.className = 'fade-in';
             const h2 = document.createElement('h2'); 
             
-            if (type === 'sites') { h2.innerText = "Сайти"; c.appendChild(h2); ['landing', 'corp', 'shop'].forEach(k => c.appendChild(createBtn(SERVICES[k].title, () => renderProduct(k)))); }
-            if (type === 'bots') { h2.innerText = "Боти"; c.appendChild(h2); ['simple_bot', 'integration_bot', 'mini_app'].forEach(k => c.appendChild(createBtn(SERVICES[k].title, () => renderProduct(k)))); }
-            if (type === 'seo') { h2.innerText = "SEO"; c.appendChild(h2); ['audit', 'seo_adapt', 'seo_promo'].forEach(k => c.appendChild(createBtn(SERVICES[k].title, () => renderProduct(k)))); }
+            // Тут передаємо 'type' у функцію renderProduct, щоб знати, куди повертатися
+            if (type === 'sites') { h2.innerText = "Розробка Сайтів"; c.appendChild(h2); ['landing', 'corp', 'shop'].forEach(k => c.appendChild(createBtn(SERVICES[k].title, () => renderProduct(k, 'sites')))); }
+            if (type === 'bots') { h2.innerText = "Боти та Додатки"; c.appendChild(h2); ['simple_bot', 'integration_bot', 'mini_app'].forEach(k => c.appendChild(createBtn(SERVICES[k].title, () => renderProduct(k, 'bots')))); }
+            if (type === 'seo') { h2.innerText = "SEO Послуги"; c.appendChild(h2); ['audit', 'seo_adapt', 'seo_promo'].forEach(k => c.appendChild(createBtn(SERVICES[k].title, () => renderProduct(k, 'seo')))); }
+            
             app.appendChild(c);
         }
 
-        function renderProduct(key) {
+        function renderProduct(key, fromCategory) {
             tg.BackButton.show();
-            tg.BackButton.onClick(() => renderHome()); 
+            // ТЕПЕР КНОПКА НАЗАД ВЕДЕ В КАТЕГОРІЮ, А НЕ ДОДОМУ
+            tg.BackButton.onClick(() => renderCategory(fromCategory)); 
+
             const p = SERVICES[key];
             app.innerHTML = '';
             const c = document.createElement('div'); c.className = 'fade-in';
             
-            c.innerHTML = `<h2>${p.title}</h2><div class="legal-badge">🛡 Офіційно: ФОП, Договір</div><div class="description">${p.desc.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')}</div><div class="meta-info">⏱ ${p.time}</div><div class="price-tag">${p.price}</div>`;
+            c.innerHTML = `<h2>${p.title}</h2>
+                           <div class="legal-badge">🛡 Офіційно: ФОП, Договір</div>
+                           <div class="description">${p.desc.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')}</div>
+                           <div class="meta-info">⏱ ${p.time}</div>
+                           <div class="price-tag">${p.price}</div>`;
             
             c.appendChild(createBtn(`🔥 Хочу замовити`, () => {
                 tg.openTelegramLink(`https://t.me/${MY_TELEGRAM_USERNAME}?text=${encodeURIComponent('Привіт! Хочу замовити: ' + p.title)}`);
-            }));
-            c.appendChild(createBtn("🔙 Назад", renderHome, true));
+            }, true));
+            
             app.appendChild(c);
         }
-
-        renderHome();
     </script>
 </body>
 </html>
