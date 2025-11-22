@@ -6,13 +6,14 @@
     <title>Code&Go</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        /* 🎨 НОВИЙ ДИЗАЙН CODE&GO */
+        /* 🎨 ДИЗАЙН CODE&GO */
         :root {
-            --bg-color: #1A2B43; /* Темно-синій фон */
+            --bg-color: #1A2B43; 
             --text-color: #ffffff;
-            --accent-color: #00E5FF; /* Неоновий ціан */
+            --accent-color: #00E5FF; 
             --btn-border: rgba(255, 255, 255, 0.5); 
             --card-bg: rgba(255, 255, 255, 0.05);
+            --success-color: #00ff9d;
         }
 
         body {
@@ -23,186 +24,170 @@
             padding: 20px;
             box-sizing: border-box;
             min-height: 100vh;
-            overflow-x: hidden; /* Прибирає горизонтальний скрол */
+            overflow-x: hidden;
         }
 
-        /* 🔥 ЗАСТАВКА (SPLASH SCREEN) */
+        /* 🔥 ЗАСТАВКА */
         #splash-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #ffffff; /* Білий фон для лого */
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #ffffff; z-index: 9999;
+            display: flex; align-items: center; justify-content: center;
             transition: opacity 0.5s ease-out;
         }
+        /* Анімація логотипа */
+        .logo-img { width: 180px; height: auto; animation: pulseLogo 3s infinite; }
+        @keyframes pulseLogo { 0% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.05); opacity: 1; } 100% { transform: scale(1); opacity: 0.8; } }
 
-        .logo-text {
-            font-size: 42px;
-            font-weight: 900;
-            color: #1A2B43;
-            letter-spacing: -1px;
-            animation: pulseLogo 2s infinite;
-        }
-
-        @keyframes pulseLogo {
-            0% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.05); opacity: 1; }
-            100% { transform: scale(1); opacity: 0.8; }
-        }
-
-        /* ОСНОВНИЙ ІНТЕРФЕЙС */
-        h1 { 
-            font-size: 32px; 
-            font-weight: 800; 
-            text-align: center; 
-            margin: 10px 0 5px 0;
-            color: #fff;
-        }
-        
+        /* ТИПОГРАФІКА */
+        h1 { font-size: 32px; font-weight: 800; text-align: center; margin: 10px 0 5px 0; color: #fff; }
         h2 { text-align: center; color: var(--accent-color); margin-bottom: 25px; }
-        
-        .subtitle { 
-            text-align: center; 
-            color: rgba(255, 255, 255, 0.6); 
-            margin-bottom: 40px; 
-            font-size: 14px; 
-            letter-spacing: 0.5px;
-        }
+        .subtitle { text-align: center; color: rgba(255, 255, 255, 0.6); margin-bottom: 30px; font-size: 14px; letter-spacing: 0.5px; }
 
-        /* КНОПКИ (Овальні та прозорі) */
+        /* КНОПКИ */
         .btn {
-            display: block;
-            width: 100%;
-            padding: 18px; /* Більші кнопки */
-            margin-bottom: 15px;
-            background-color: transparent;
-            border: 1px solid var(--btn-border);
-            border-radius: 50px; /* Повністю овальні */
-            color: #ffffff;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            text-align: center;
-            transition: all 0.2s;
-            backdrop-filter: blur(10px);
-            -webkit-tap-highlight-color: transparent; /* Прибирає виділення на iPhone */
+            display: block; width: 100%; padding: 16px; margin-bottom: 12px;
+            background-color: transparent; border: 1px solid var(--btn-border);
+            border-radius: 50px; color: #ffffff; font-size: 16px; font-weight: 600;
+            cursor: pointer; text-align: center; transition: all 0.2s;
+            backdrop-filter: blur(10px); -webkit-tap-highlight-color: transparent;
+        }
+        .btn:active { background-color: rgba(255, 255, 255, 0.1); transform: scale(0.98); }
+        .btn-primary { border-color: var(--accent-color); color: var(--accent-color); box-shadow: 0 0 15px rgba(0, 229, 255, 0.15); }
+
+        /* КАРТКИ ТОВАРІВ ТА ІНФО */
+        .description, .faq-item, .calc-container {
+            background: var(--card-bg); padding: 20px; border-radius: 20px;
+            margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.1);
+        }
+        .price-tag { font-size: 32px; font-weight: 800; color: var(--accent-color); text-align: center; margin: 20px 0; text-shadow: 0 0 20px rgba(0, 229, 255, 0.4); }
+        .legal-badge { display: inline-block; background: rgba(0, 229, 255, 0.1); color: var(--accent-color); padding: 6px 12px; border-radius: 50px; font-size: 11px; font-weight: bold; margin-bottom: 15px; width: 100%; text-align: center; box-sizing: border-box; border: 1px solid rgba(0, 229, 255, 0.3); }
+        .meta-info { text-align: center; color: rgba(255, 255, 255, 0.5); margin-bottom: 10px; font-size: 13px; text-transform: uppercase; }
+
+        /* 🧮 ЕЛЕМЕНТИ КАЛЬКУЛЯТОРА */
+        select {
+            width: 100%; padding: 12px; border-radius: 10px; background: rgba(255,255,255,0.1);
+            color: white; border: 1px solid var(--accent-color); margin-bottom: 20px; font-size: 16px; outline: none;
+        }
+        option { background: #1A2B43; color: white; }
+
+        .range-container { margin: 20px 0; text-align: center; }
+        .range-label { font-size: 14px; color: #ccc; margin-bottom: 10px; display: block; }
+        input[type=range] {
+            width: 100%; -webkit-appearance: none; background: transparent;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none; height: 20px; width: 20px; border-radius: 50%;
+            background: var(--accent-color); margin-top: -8px; box-shadow: 0 0 10px var(--accent-color);
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%; height: 4px; background: rgba(255,255,255,0.3); border-radius: 2px;
         }
 
-        .btn:active {
-            background-color: rgba(255, 255, 255, 0.1);
-            transform: scale(0.98);
+        .calc-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .calc-row:last-child { border-bottom: none; }
+        .calc-label { font-size: 15px; }
+        .calc-price { color: var(--accent-color); font-weight: bold; font-size: 14px; margin-right: 10px;}
+
+        /* Switch Toggle */
+        .switch { position: relative; display: inline-block; width: 46px; height: 24px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255,255,255,0.2); transition: .4s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--accent-color); }
+        input:checked + .slider:before { transform: translateX(22px); }
+
+        .total-bar {
+            position: sticky; bottom: 10px; background: rgba(26, 43, 67, 0.95);
+            padding: 15px; border-radius: 20px; border: 1px solid var(--accent-color);
+            backdrop-filter: blur(10px); margin-top: 20px; text-align: center;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5); z-index: 100;
         }
 
-        /* Кнопка "Купити" - яскрава */
-        .btn-primary {
-            border-color: var(--accent-color);
-            color: var(--accent-color);
-            box-shadow: 0 0 15px rgba(0, 229, 255, 0.15);
-        }
+        /* ❓ FAQ STYLES */
+        .faq-question { font-weight: 600; display: flex; justify-content: space-between; align-items: center; cursor: pointer; padding-bottom: 5px;}
+        .faq-answer { margin-top: 10px; color: rgba(255,255,255,0.7); font-size: 14px; line-height: 1.5; display: none; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); }
+        .faq-item.active .faq-answer { display: block; animation: fadeIn 0.3s; }
+        .faq-item.active .faq-icon { transform: rotate(180deg); color: var(--accent-color); }
 
-        /* ОПИС */
-        .description {
-            background: var(--card-bg);
-            padding: 25px;
-            border-radius: 20px;
-            line-height: 1.6;
-            margin-bottom: 25px;
-            white-space: pre-wrap;
-            font-size: 15px;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        
-        .price-tag {
-            font-size: 32px;
-            font-weight: 800;
-            color: var(--accent-color);
-            text-align: center;
-            margin: 25px 0;
-            text-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
-        }
-
-        .meta-info {
-            text-align: center;
-            color: rgba(255, 255, 255, 0.5);
-            margin-bottom: 10px;
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .legal-badge {
-            display: inline-block;
-            background: rgba(0, 229, 255, 0.1);
-            color: var(--accent-color);
-            padding: 8px 15px;
-            border-radius: 50px;
-            font-size: 11px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            width: 100%;
-            text-align: center;
-            box-sizing: border-box;
-            border: 1px solid rgba(0, 229, 255, 0.3);
-        }
-
-        /* Анімація появи блоків */
-        .fade-in { animation: fadeIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
     <div id="splash-screen">
-        <img src="IMG_5108.png" class="logo-text" style="width: 300px; height: auto;">
+        <img src="IMG_5108.png" class="logo-img" onerror="this.style.display='none'; document.querySelector('.fallback-text').style.display='block'">
+        <div class="fallback-text" style="display:none; font-size:40px; font-weight:900; color:#1A2B43;">Code&Go</div>
     </div>
 
     <div id="app" style="display: none;"></div>
 
     <script>
-        // 👇 ВПИШИ СЮДИ СВІЙ НІК 👇
-        const MY_TELEGRAM_USERNAME = "codego_manager";
-
+        // ⚙️ НАЛАШТУВАННЯ
+        const MY_TELEGRAM_USERNAME = "codego_manager"; // Твій нік
         const COMPANY_NAME = "Code&Go";
         const COMPANY_SLOGAN = "Digital Solutions";
+        const SPLASH_TIME = 3000; // 3 секунди
 
+        // 💰 ЦІНИ ПОСЛУГ
         const SERVICES = {
-            landing: { title: "Лендінг", price: "від 1250 грн", time: "6-24 год", desc: "Сайт для швидких продажів. **Мета:** змусити купити тут і зараз." },
-            corp: { title: "Корпоративний сайт", price: "від 2499 грн", time: "24-72 год", desc: "Офіс компанії в інтернеті. Викликає довіру та показує статус." },
-            shop: { title: "Інтернет-магазин", price: "від 4199 грн", time: "3-7 днів", desc: "Машина для продажів 24/7. Каталог, кошик, автоматизація." },
-            simple_bot: { title: "Простий чат-бот", price: "від 2499 грн", time: "48-72 год", desc: "Бот-секретар. Відповідає на питання, економить ваш час." },
-            integration_bot: { title: "Бот з інтеграціями", price: "від 4199 грн", time: "3-7 днів", desc: "Рівень PRO. Зв'язок з CRM, таблицями та записом клієнтів." },
-            mini_app: { title: "Mini App (як цей)", price: "від 6299 грн", time: "5-9 днів", desc: "Додаток прямо в Telegram. Вау-ефект для клієнтів." },
-            audit: { title: "Аудит сайту", price: "від 799 грн", time: "6-24 год", desc: "Пошук помилок, які заважають вам заробляти." },
-            seo_adapt: { title: "SEO адаптація", price: "від 2499 грн", time: "3-7 днів", desc: "Разова настройка сайту, щоб Google його полюбив." },
-            seo_promo: { title: "SEO просування", price: "від 4199 грн", time: "від 7 днів", desc: "Виведення в ТОП Google. Безкоштовні клієнти щодня." }
+            landing: { title: "Лендінг", price: "від 4199 грн", time: "2-5 днів", desc: "Сайт для швидких продажів. **Мета:** змусити купити тут і зараз." },
+            corp: { title: "Корпоративний сайт", price: "від 8499 грн", time: "5-10 днів", desc: "Офіс компанії в інтернеті. Багатосторінковий сайт, що викликає довіру." },
+            shop: { title: "Інтернет-магазин", price: "від 21199 грн", time: "10-20 днів", desc: "Машина для продажів 24/7. Каталог, кошик, автоматизація." },
+            simple_bot: { title: "Простий чат-бот", price: "від 3499 грн", time: "3-5 днів", desc: "Бот-секретар. Відповідає на питання, економить ваш час." },
+            integration_bot: { title: "Бот з інтеграціями", price: "від 6199 грн", time: "7-14 днів", desc: "Рівень PRO. Зв'язок з CRM, таблицями та записом клієнтів." },
+            mini_app: { title: "Mini App (як цей)", price: "від 8299 грн", time: "10-20 днів", desc: "Додаток прямо в Telegram. Вау-ефект для клієнтів." },
+            audit: { title: "Аудит сайту", price: "від 799 грн", time: "1-2 дні", desc: "Пошук помилок, які заважають вам заробляти." },
+            seo_adapt: { title: "SEO адаптація", price: "від 4499 грн", time: "3-7 днів", desc: "Разова настройка сайту, щоб Google його полюбив." },
+            seo_promo: { title: "SEO просування", price: "від 11999 грн", time: "від 30 днів", desc: "Виведення в ТОП Google. Безкоштовні клієнти щодня." }
         };
+
+        // 🧮 ДАНІ ДЛЯ КАЛЬКУЛЯТОРА
+        const CALC_TYPES = {
+            landing: { name: "Лендінг", base: 4199, unit: "blocks", unitName: "Кількість дод. блоків", stepPrice: 400, max: 10 },
+            corp: { name: "Корпоративний сайт", base: 8499, unit: "pages", unitName: "Кількість сторінок", stepPrice: 1200, max: 15 },
+            shop: { name: "Інтернет-магазин", base: 21199, unit: "pages", unitName: "Кількість сторінок", stepPrice: 1200, max: 20 },
+            bot: { name: "Чат-бот", base: 3499, unit: null, unitName: "", stepPrice: 0, max: 0 },
+            seo: { name: "SEO Оптимізація", base: 4499, unit: null, unitName: "", stepPrice: 0, max: 0 }
+        };
+
+        const CALC_EXTRAS = [
+            { id: 'design', name: 'Унікальний дизайн', price: 2500 },
+            { id: 'admin', name: 'Адмін-панель', price: 1200 },
+            { id: 'seo', name: 'Базове SEO', price: 2800 },
+            { id: 'copy', name: 'Копірайтинг (весь сайт)', price: 2500 },
+            { id: 'support', name: 'Підтримка (1 міс)', price: 5000 },
+            { id: 'domain', name: 'Допомога з доменом', price: 300 }
+        ];
+
+        // ❓ FAQ
+        const FAQ_ITEMS = [
+            { q: "Чи входить у вартість хостинг/домен?", a: "Ні. Побажання та технічні вимоги у всіх різні, тому хостинг і домен купуються окремо. Ми допомагаємо це зробити." },
+            { q: "Чому такі ціни? Можна дешевше?", a: "Ми не використовуємо дешеві шаблони, які ламаються. Ви платите за стабільність, швидкість та інструмент, який заробляє гроші." },
+            { q: "Що входить у вартість?", a: "Аналіз ніші, дизайн, чистий код, мобільна адаптація та базова підготовка до запуску." },
+            { q: "Як відбувається оплата?", a: "Працюємо офіційно (ФОП). 50% передоплата, 50% після здачі проекту." },
+            { q: "Чи буде підтримка?", a: "Так, протягом 14 днів після здачі ми безкоштовно виправляємо технічні моменти." }
+        ];
+
+        // --- ЛОГІКА ---
 
         const tg = window.Telegram.WebApp;
         tg.expand();
-        tg.setHeaderColor('#1A2B43'); 
-        tg.setBackgroundColor('#1A2B43');
+        tg.setHeaderColor('#1A2B43'); tg.setBackgroundColor('#1A2B43');
 
         const app = document.getElementById('app');
         const splash = document.getElementById('splash-screen');
 
-        // Логіка заставки
         window.onload = () => {
             setTimeout(() => {
                 splash.style.opacity = '0';
-                setTimeout(() => {
-                    splash.style.display = 'none';
-                    app.style.display = 'block';
-                    renderHome();
-                }, 500);
-            }, 4000); // Час показу лого (2 сек)
+                setTimeout(() => { splash.style.display = 'none'; app.style.display = 'block'; renderHome(); }, 500);
+            }, SPLASH_TIME); 
         };
 
-        // Функція створення кнопок
         function createBtn(text, onClick, isPrimary = false) {
             const btn = document.createElement('button');
             btn.className = isPrimary ? 'btn btn-primary' : 'btn';
@@ -214,59 +199,155 @@
         // --- ЕКРАНИ ---
 
         function renderHome() {
-            app.innerHTML = '';
-            tg.BackButton.hide(); // Ховаємо кнопку назад в головному меню
-            
+            app.innerHTML = ''; tg.BackButton.hide();
             const c = document.createElement('div'); c.className = 'fade-in';
-            
             c.innerHTML = `<h1>${COMPANY_NAME}</h1><div class="subtitle">${COMPANY_SLOGAN} <br> Вітаю, ${tg.initDataUnsafe?.user?.first_name || 'Клієнте'}! 👋</div>`;
-
+            
             c.appendChild(createBtn("🌐 Сайти", () => renderCategory('sites')));
             c.appendChild(createBtn("🤖 Боти / Mini App", () => renderCategory('bots')));
             c.appendChild(createBtn("📈 SEO Послуги", () => renderCategory('seo')));
+            c.appendChild(createBtn("🧮 Розумний Калькулятор", renderCalculator, true)); 
+            c.appendChild(createBtn("❓ Питання (FAQ)", renderFAQ));
             c.appendChild(createBtn("💬 Консультація", () => tg.openTelegramLink(`https://t.me/${MY_TELEGRAM_USERNAME}`)));
-            
             app.appendChild(c);
         }
 
         function renderCategory(type) {
-            tg.BackButton.show();
-            tg.BackButton.onClick(() => renderHome()); // З категорії повертаємось додому
-
+            tg.BackButton.show(); tg.BackButton.onClick(() => renderHome());
             app.innerHTML = '';
             const c = document.createElement('div'); c.className = 'fade-in';
             const h2 = document.createElement('h2'); 
             
-            // Тут передаємо 'type' у функцію renderProduct, щоб знати, куди повертатися
             if (type === 'sites') { h2.innerText = "Розробка Сайтів"; c.appendChild(h2); ['landing', 'corp', 'shop'].forEach(k => c.appendChild(createBtn(SERVICES[k].title, () => renderProduct(k, 'sites')))); }
             if (type === 'bots') { h2.innerText = "Боти та Додатки"; c.appendChild(h2); ['simple_bot', 'integration_bot', 'mini_app'].forEach(k => c.appendChild(createBtn(SERVICES[k].title, () => renderProduct(k, 'bots')))); }
             if (type === 'seo') { h2.innerText = "SEO Послуги"; c.appendChild(h2); ['audit', 'seo_adapt', 'seo_promo'].forEach(k => c.appendChild(createBtn(SERVICES[k].title, () => renderProduct(k, 'seo')))); }
-            
             app.appendChild(c);
         }
 
         function renderProduct(key, fromCategory) {
-            tg.BackButton.show();
-            // ТЕПЕР КНОПКА НАЗАД ВЕДЕ В КАТЕГОРІЮ, А НЕ ДОДОМУ
-            tg.BackButton.onClick(() => renderCategory(fromCategory)); 
-
+            tg.BackButton.show(); tg.BackButton.onClick(() => renderCategory(fromCategory));
             const p = SERVICES[key];
             app.innerHTML = '';
             const c = document.createElement('div'); c.className = 'fade-in';
+            c.innerHTML = `<h2>${p.title}</h2><div class="legal-badge">🛡 Офіційно: ФОП, Договір</div><div class="description">${p.desc.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')}</div><div class="meta-info">⏱ ${p.time}</div><div class="price-tag">${p.price}</div>`;
+            c.appendChild(createBtn(`🔥 Хочу замовити`, () => { tg.openTelegramLink(`https://t.me/${MY_TELEGRAM_USERNAME}?text=${encodeURIComponent('Привіт! Хочу замовити: ' + p.title)}`); }, true));
+            app.appendChild(c);
+        }
+
+        // --- РОЗУМНИЙ КАЛЬКУЛЯТОР ---
+        function renderCalculator() {
+            tg.BackButton.show(); tg.BackButton.onClick(() => renderHome());
+            app.innerHTML = '';
+            const c = document.createElement('div'); c.className = 'fade-in';
             
-            c.innerHTML = `<h2>${p.title}</h2>
-                           <div class="legal-badge">🛡 Офіційно: ФОП, Договір</div>
-                           <div class="description">${p.desc.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')}</div>
-                           <div class="meta-info">⏱ ${p.time}</div>
-                           <div class="price-tag">${p.price}</div>`;
+            // Вибір типу
+            const selectHTML = `<div class="calc-container">
+                <div class="calc-label" style="margin-bottom:10px; color:#ccc;">Тип послуги:</div>
+                <select id="typeSelect">
+                    ${Object.keys(CALC_TYPES).map(k => `<option value="${k}">${CALC_TYPES[k].name}</option>`).join('')}
+                </select>
+                
+                <div id="sliderBlock">
+                    <label id="sliderLabel" class="range-label">Кількість: 0</label>
+                    <input type="range" id="rangeInput" min="0" max="10" value="0">
+                </div>
+            </div>`;
             
-            c.appendChild(createBtn(`🔥 Хочу замовити`, () => {
-                tg.openTelegramLink(`https://t.me/${MY_TELEGRAM_USERNAME}?text=${encodeURIComponent('Привіт! Хочу замовити: ' + p.title)}`);
-            }, true));
-            
+            // Чекбокси доп послуг
+            let extrasHTML = `<div class="calc-container" style="margin-top:10px;">`;
+            CALC_EXTRAS.forEach(ex => {
+                extrasHTML += `<div class="calc-row">
+                    <div class="calc-label">${ex.name}</div>
+                    <div style="display:flex; align-items:center;">
+                        <div class="calc-price">+${ex.price}</div>
+                        <label class="switch"><input type="checkbox" class="extra-check" data-price="${ex.price}" data-name="${ex.name}"><span class="slider"></span></label>
+                    </div>
+                </div>`;
+            });
+            extrasHTML += `</div>`;
+
+            // Підвал з ціною
+            const footerHTML = `<div class="total-bar">
+                <div style="font-size:13px; color:#aaa;">Орієнтовна вартість:</div>
+                <div class="price-tag" id="totalPrice" style="margin:5px 0;">0 грн</div>
+                <button id="orderCalcBtn" class="btn btn-primary">Замовити розрахунок</button>
+            </div>`;
+
+            c.innerHTML = `<h2>Калькулятор</h2>` + selectHTML + extrasHTML + footerHTML;
+            app.appendChild(c);
+
+            // ЛОГІКА РОЗРАХУНКУ
+            const select = document.getElementById('typeSelect');
+            const rangeBlock = document.getElementById('sliderBlock');
+            const rangeInput = document.getElementById('rangeInput');
+            const rangeLabel = document.getElementById('sliderLabel');
+            const totalDisplay = document.getElementById('totalPrice');
+            const checks = document.querySelectorAll('.extra-check');
+
+            function calculate() {
+                const typeKey = select.value;
+                const typeData = CALC_TYPES[typeKey];
+                let total = typeData.base;
+                let sliderVal = 0;
+
+                // Логіка повзунка
+                if (typeData.unit) {
+                    rangeBlock.style.display = 'block';
+                    rangeInput.max = typeData.max;
+                    sliderVal = parseInt(rangeInput.value);
+                    total += sliderVal * typeData.stepPrice;
+                    rangeLabel.innerText = `${typeData.unitName}: ${sliderVal} (+${sliderVal * typeData.stepPrice} грн)`;
+                } else {
+                    rangeBlock.style.display = 'none';
+                }
+
+                // Логіка чекбоксів
+                checks.forEach(ch => { if(ch.checked) total += parseInt(ch.dataset.price); });
+
+                totalDisplay.innerText = total + " грн";
+                return { total, typeData, sliderVal };
+            }
+
+            // Події
+            select.addEventListener('change', () => { rangeInput.value = 0; calculate(); });
+            rangeInput.addEventListener('input', calculate);
+            checks.forEach(ch => ch.addEventListener('change', () => { tg.HapticFeedback.impactOccurred('light'); calculate(); }));
+
+            // Кнопка замовлення
+            document.getElementById('orderCalcBtn').onclick = () => {
+                const data = calculate();
+                let msg = `🔢 Новий прорахунок!\n\n📌 Тип: ${data.typeData.name} (База: ${data.typeData.base} грн)\n`;
+                if(data.typeData.unit) {
+                    msg += `📏 ${data.typeData.unitName}: ${data.sliderVal} (+${data.sliderVal * data.typeData.stepPrice} грн)\n`;
+                }
+                msg += `\nДодатково:\n`;
+                checks.forEach(ch => { if(ch.checked) msg += `✅ ${ch.dataset.name} (+${ch.dataset.price})\n`; });
+                msg += `\n💰 РАЗОМ: ${data.total} грн`;
+                tg.openTelegramLink(`https://t.me/${MY_TELEGRAM_USERNAME}?text=${encodeURIComponent(msg)}`);
+            };
+
+            calculate(); // Перший запуск
+        }
+
+        // --- FAQ ---
+        function renderFAQ() {
+            tg.BackButton.show(); tg.BackButton.onClick(() => renderHome());
+            app.innerHTML = '';
+            const c = document.createElement('div'); c.className = 'fade-in';
+            c.innerHTML = `<h2>Питання (FAQ)</h2>`;
+            FAQ_ITEMS.forEach(item => {
+                const div = document.createElement('div'); div.className = 'faq-item';
+                div.innerHTML = `<div class="faq-question"><span>${item.q}</span><span class="faq-icon">▼</span></div><div class="faq-answer">${item.a.replace(/\n/g, '<br>')}</div>`;
+                div.onclick = () => {
+                    tg.HapticFeedback.impactOccurred('light');
+                    const isOpen = div.classList.contains('active');
+                    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+                    if(!isOpen) div.classList.add('active');
+                };
+                c.appendChild(div);
+            });
             app.appendChild(c);
         }
     </script>
 </body>
 </html>
-
